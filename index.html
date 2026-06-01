@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gustavo Miranda — Automação & Inteligência Operacional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080b0f;
+    --bg2: #0e1318;
+    --bg3: #161d25;
+    --fg: #e8f0f8;
+    --fg2: #7e9ab5;
+    --fg3: #3d5468;
+    --accent: #5ac8fa;
+    --accent2: #2e86c1;
+    --green: #3be08b;
+    --amber: #f5a623;
+    --border: rgba(90,200,250,0.07);
+    --border2: rgba(90,200,250,0.15);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --radius: 12px;
+    --radius-sm: 6px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent2); color: #fff; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(8,11,15,0.85);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--fg);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--fg2);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--fg); }
+
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(90,200,250,0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .nav-cta:hover { background: var(--accent); color: #080b0f; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 55% 55% at 75% 45%, rgba(46,134,193,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 35% 35% at 15% 75%, rgba(59,224,139,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 10%, rgba(90,200,250,0.04) 0%, transparent 60%);
+  }
+
+  /* grid lines */
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(90,200,250,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90,200,250,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 860px;
+    padding-top: 5rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.73rem;
+    color: var(--green);
+    background: rgba(59,224,139,0.07);
+    border: 1px solid rgba(59,224,139,0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.06em;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: blink 2.2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .line { display: block; }
+  .hero-title .dim { color: var(--fg3); }
+  .hero-title .hl { color: var(--accent); }
+
+  .hero-role {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--fg2);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+  .hero-role .sep { color: var(--fg3); margin: 0 0.75rem; }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--fg2);
+    max-width: 540px;
+    line-height: 1.85;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-desc strong { color: var(--fg); font-weight: 500; }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #080b0f;
+    background: var(--accent);
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .btn-primary:hover { background: #7dd9ff; transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--fg2);
+    background: transparent;
+    border: 1px solid var(--border2);
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { color: var(--fg); border-color: var(--fg3); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem; left: 3rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--fg3);
+    letter-spacing: 0.1em;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--fg3);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--accent);
+    animation: sweep 2s infinite;
+  }
+  @keyframes sweep { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+  /* ── NUMBERS STRIP ── */
+  .strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--bg2);
+  }
+  .strip-item {
+    padding: 2rem 2.5rem;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .strip-item:last-child { border-right: none; }
+  .strip-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem; font-weight: 800;
+    letter-spacing: -0.04em; line-height: 1;
+    color: var(--fg);
+  }
+  .strip-num span { color: var(--accent); }
+  .strip-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; color: var(--fg3);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; color: var(--accent);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 0.5rem;
+  }
+  .section-sub {
+    font-size: 0.95rem; color: var(--fg2);
+    font-weight: 300; max-width: 520px;
+    line-height: 1.8; margin-top: 0.75rem;
+  }
+  .divider { width: 100%; height: 1px; background: var(--border); }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    gap: 5rem; align-items: start; margin-top: 3rem;
+  }
+  .about-text p { color: var(--fg2); margin-bottom: 1.25rem; font-weight: 300; line-height: 1.9; }
+  .about-text p strong { color: var(--fg); font-weight: 500; }
+
+  .highlight-box {
+    background: rgba(59,224,139,0.04);
+    border: 1px solid rgba(59,224,139,0.15);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .highlight-box .hb-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem; color: var(--green);
+    letter-spacing: 0.1em; margin-bottom: 0.75rem;
+  }
+  .highlight-box p {
+    font-size: 0.9rem; color: rgba(232,240,248,0.7);
+    line-height: 1.75; margin: 0;
+  }
+  .highlight-box strong { color: var(--green) !important; }
+
+  .cert-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .cert-title {
+    font-family: var(--font-mono);
+    font-size: 0.68rem; color: var(--fg3);
+    letter-spacing: 0.1em; margin-bottom: 1rem;
+  }
+  .cert-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cert-item:last-child { border: none; padding-bottom: 0; }
+  .cert-icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    background: rgba(90,200,250,0.1);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; color: var(--accent); font-family: var(--font-mono);
+    font-weight: 500; flex-shrink: 0;
+  }
+  .cert-name { font-size: 0.85rem; font-weight: 500; color: var(--fg); }
+  .cert-org { font-family: var(--font-mono); font-size: 0.68rem; color: var(--fg3); letter-spacing: 0.04em; }
+  .cert-year { font-family: var(--font-mono); font-size: 0.68rem; color: var(--fg3); margin-left: auto; }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { margin-top: 3rem; }
+  .exp-item {
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 3rem; padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+
+  .exp-date {
+    font-family: var(--font-mono);
+    font-size: 0.73rem; color: var(--fg3);
+    padding-top: 0.25rem; letter-spacing: 0.04em; line-height: 1.7;
+  }
+  .exp-current {
+    display: inline-block;
+    font-size: 0.62rem; color: var(--green);
+    background: rgba(59,224,139,0.09);
+    border: 1px solid rgba(59,224,139,0.2);
+    padding: 0.2rem 0.6rem; border-radius: 100px;
+    margin-top: 0.6rem; letter-spacing: 0.06em;
+  }
+  .exp-duration {
+    display: block; margin-top: 0.4rem;
+    font-size: 0.65rem; color: var(--fg3); letter-spacing: 0.04em;
+  }
+
+  .exp-role {
+    font-family: var(--font-display);
+    font-size: 1.15rem; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 0.25rem;
+    color: var(--fg);
+  }
+  .exp-company {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--accent); margin-bottom: 1rem; letter-spacing: 0.03em;
+  }
+  .exp-desc { font-size: 0.88rem; color: var(--fg2); line-height: 1.8; font-weight: 300; }
+
+  .exp-bullets { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .exp-bullet {
+    display: flex; gap: 0.75rem; font-size: 0.84rem; color: var(--fg2); line-height: 1.65;
+  }
+  .exp-bullet::before {
+    content: '▸'; color: var(--accent); flex-shrink: 0; font-size: 0.75rem; margin-top: 0.25rem;
+  }
+
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+  .tag {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--fg3); background: var(--bg3);
+    border: 1px solid var(--border); padding: 0.28rem 0.7rem;
+    border-radius: var(--radius-sm); letter-spacing: 0.04em;
+  }
+  .tag.hl { color: var(--accent); border-color: rgba(90,200,250,0.2); background: rgba(90,200,250,0.05); }
+
+  /* ── PROJECT FEATURED ── */
+  .project-featured {
+    margin-top: 3rem;
+    background: var(--bg2);
+    border: 1px solid rgba(90,200,250,0.15);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .pf-header {
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem;
+  }
+  .pf-badge {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--accent); background: rgba(90,200,250,0.08);
+    border: 1px solid rgba(90,200,250,0.2);
+    padding: 0.3rem 0.8rem; border-radius: 100px;
+    letter-spacing: 0.07em; white-space: nowrap;
+  }
+  .pf-name {
+    font-family: var(--font-display);
+    font-size: 1.6rem; font-weight: 800;
+    letter-spacing: -0.03em; margin-bottom: 0.4rem;
+  }
+  .pf-tagline { font-size: 0.9rem; color: var(--fg2); font-weight: 300; }
+
+  .pf-metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--border);
+  }
+  .pf-metric {
+    padding: 1.5rem 2.5rem;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .pf-metric:last-child { border-right: none; }
+  .pf-metric-num {
+    font-family: var(--font-display);
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--accent); letter-spacing: -0.04em; line-height: 1;
+  }
+  .pf-metric-label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--fg3); letter-spacing: 0.06em; }
+
+  .pf-body { padding: 2rem 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+
+  .pf-col-title {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--fg3); letter-spacing: 0.1em; margin-bottom: 1rem;
+  }
+  .pf-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .pf-row { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.84rem; color: var(--fg2); line-height: 1.6; }
+  .pf-row.bad::before { content: '❌'; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.15rem; }
+  .pf-row.good::before { content: '✅'; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.15rem; }
+
+  .pf-footer {
+    padding: 1.25rem 2.5rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pf-stack { font-family: var(--font-mono); font-size: 0.73rem; color: var(--fg3); letter-spacing: 0.04em; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; margin-top: 3rem;
+  }
+  .skill-group { background: var(--bg2); padding: 2rem; }
+  .skill-group-title {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--accent); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 1.25rem;
+  }
+  .skill-list { display: flex; flex-direction: column; gap: 0.8rem; }
+  .skill-row { display: flex; align-items: center; gap: 0.75rem; }
+  .skill-bar-wrap {
+    margin-left: auto;
+    display: flex; gap: 3px;
+  }
+  .skill-bar {
+    width: 18px; height: 3px; border-radius: 2px;
+    background: var(--bg3);
+  }
+  .skill-bar.on { background: var(--accent); }
+  .skill-bar.on.dim { background: rgba(90,200,250,0.35); }
+  .skill-name { font-size: 0.85rem; color: var(--fg2); }
+
+  /* ── CONTACT ── */
+  .contact-wrap {
+    margin-top: 3rem; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .contact-intro { font-size: 0.95rem; color: var(--fg2); line-height: 1.9; font-weight: 300; margin-top: 0.5rem; }
+  .contact-email {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.35rem; font-weight: 700;
+    color: var(--accent); text-decoration: none;
+    letter-spacing: -0.02em; margin-top: 2rem;
+    transition: color 0.2s;
+  }
+  .contact-email:hover { color: #7dd9ff; }
+  .contact-location {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--fg3); margin-top: 1rem; letter-spacing: 0.04em;
+  }
+  .contact-location::before { content: '📍'; font-size: 0.8rem; }
+
+  .social-list {
+    display: flex; flex-direction: column; gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+  }
+  .social-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg2); text-decoration: none; transition: background 0.15s;
+  }
+  .social-item:hover { background: var(--bg3); }
+  .social-name { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--fg); }
+  .social-handle { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg3); letter-spacing: 0.04em; margin-top: 0.1rem; }
+  .social-arrow { font-size: 0.9rem; color: var(--fg3); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg3); letter-spacing: 0.04em; }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .fade-in:nth-child(1) { animation-delay: 0.1s; }
+  .fade-in:nth-child(2) { animation-delay: 0.25s; }
+  .fade-in:nth-child(3) { animation-delay: 0.4s; }
+  .fade-in:nth-child(4) { animation-delay: 0.55s; }
+  .fade-in:nth-child(5) { animation-delay: 0.7s; }
+  @keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    .strip { grid-template-columns: 1fr 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .pf-metrics { grid-template-columns: 1fr; }
+    .pf-body { grid-template-columns: 1fr; }
+    .pf-header { flex-direction: column; gap: 1rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">GM<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">sobre</a></li>
+    <li><a href="#experience">experiência</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#projects">projetos</a></li>
+    <li><a href="#contact">contato</a></li>
+  </ul>
+  <a href="https://www.linkedin.com/in/gustavo-miranda-84178bb5/" target="_blank" class="nav-cta">LinkedIn ↗</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge fade-in">disponível para oportunidades</div>
+    <h1 class="hero-title fade-in">
+      <span class="line">Gustavo</span>
+      <span class="line dim">Miranda<span class="hl">.</span></span>
+    </h1>
+    <p class="hero-role fade-in">
+      Automação &amp; Inteligência Operacional
+      <span class="sep">·</span>
+      Full Stack Developer
+      <span class="sep">·</span>
+      São Paulo, BR
+    </p>
+    <p class="hero-desc fade-in">
+      Transformo <strong>gargalos operacionais em soluções técnicas</strong> — automações Python, integrações via API REST e ferramentas web internas que geram resultado real. Processos de 20 min que agora levam menos de 2.
+    </p>
+    <div class="hero-actions fade-in">
+      <a href="#projects" class="btn-primary">Ver projetos</a>
+      <a href="#contact" class="btn-ghost">Entrar em contato</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</div>
+
+<!-- NUMBERS STRIP -->
+<div class="strip">
+  <div class="strip-item">
+    <div class="strip-num">10<span>+</span></div>
+    <div class="strip-label">anos de experiência</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-num">~200<span>h</span></div>
+    <div class="strip-label">economizadas/mês</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-num">90<span>%</span></div>
+    <div class="strip-label">redução de tempo no projeto</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-num">6</div>
+    <div class="strip-label">sistemas integrados</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="divider"></div>
+<section id="about">
+  <div class="section-label">// 01 — sobre</div>
+  <h2 class="section-title">Quem sou eu</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        Sou <strong>Analista e Desenvolvedor de Sistemas</strong> com mais de 10 anos de experiência em integração, sustentação e automação de processos em ambientes de alta complexidade.
+      </p>
+      <p>
+        Atualmente atuo na operação <strong>MVNO Nubank Claro</strong> pela Hitss Brasil, desenvolvendo soluções que eliminam gargalos operacionais — desde automações em <strong>Python</strong> e integrações via <strong>API REST</strong> até ferramentas web internas.
+      </p>
+      <p>
+        Tenho background sólido em <strong>cloud (AWS e OCI)</strong>, monitoramento de APIs, ETL, metodologias ágeis e ITIL. O que me diferencia é transitar com naturalidade entre operação, sustentação e desenvolvimento — entendo o problema do negócio e entrego a solução técnica.
+      </p>
+
+      <div class="highlight-box">
+        <div class="hb-label">// IMPACTO REAL</div>
+        <p>
+          Transformei um processo de <strong>20 minutos</strong> em menos de <strong>2 minutos</strong>, economizando ~200h/mês para a equipe de operação — sem precisar de múltiplos especialistas para cada etapa.
+        </p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="cert-box">
+        <div class="cert-title">// FORMAÇÃO & CERTIFICAÇÕES</div>
+
+        <div class="cert-item">
+          <div class="cert-icon">GTI</div>
+          <div>
+            <div class="cert-name">Gestão da Tecnologia da Informação</div>
+            <div class="cert-org">Universidade Metodista de São Paulo</div>
+          </div>
+          <div class="cert-year">2019</div>
+        </div>
+
+        <div class="cert-item">
+          <div class="cert-icon" style="color:var(--amber);background:rgba(245,166,35,0.1);border-color:rgba(245,166,35,0.2)">ITIL</div>
+          <div>
+            <div class="cert-name">ITIL v3 Foundation</div>
+            <div class="cert-org">AXELOS Global Best Practice</div>
+          </div>
+          <div class="cert-year">2014</div>
+        </div>
+
+        <div class="cert-item">
+          <div class="cert-icon" style="color:var(--green);background:rgba(59,224,139,0.1);border-color:rgba(59,224,139,0.2)">AWS</div>
+          <div>
+            <div class="cert-name">Cloud Computing</div>
+            <div class="cert-org">AWS · OCI</div>
+          </div>
+          <div class="cert-year">exp.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<div class="divider"></div>
+<section id="experience">
+  <div class="section-label">// 02 — experiência</div>
+  <h2 class="section-title">Trajetória profissional</h2>
+  <p class="section-sub">Mais de uma década construindo, integrando e automatizando sistemas em diferentes indústrias.</p>
+
+  <div class="exp-list">
+
+    <!-- Hitss / Automação -->
+    <div class="exp-item">
+      <div class="exp-date">
+        mai 2026 — presente
+        <div class="exp-current">atual</div>
+        <span class="exp-duration">2 meses</span>
+      </div>
+      <div>
+        <div class="exp-role">Desenvolvedor de Automação | Inteligência Operacional | Full Stack Pleno</div>
+        <div class="exp-company">Hitss Brasil · MVNO Nubank Claro · Remoto</div>
+        <div class="exp-desc">Atuação em setor de inteligência e desenvolvimento, identificando gargalos operacionais e transformando-os em soluções técnicas de alto impacto.</div>
+        <div class="exp-bullets">
+          <div class="exp-bullet">Desenvolvimento de automações em Python para eliminação de processos manuais repetitivos e redução de erros operacionais</div>
+          <div class="exp-bullet">Criação e manutenção de integrações entre sistemas via APIs REST — autenticação OAuth, tratamento de payloads e monitoramento de contratos de API</div>
+          <div class="exp-bullet">Desenvolvimento de interfaces web internas (dashboards e ferramentas operacionais) para consumo das automações pela equipe</div>
+          <div class="exp-bullet">Gestão do ciclo completo de projetos — da identificação do problema até o deploy, documentação e treinamento dos usuários</div>
+        </div>
+        <div class="exp-tags">
+          <span class="tag hl">Python</span>
+          <span class="tag hl">FastAPI</span>
+          <span class="tag hl">Playwright</span>
+          <span class="tag hl">OAuth 2.0</span>
+          <span class="tag">HTML/JS</span>
+          <span class="tag">Full Stack</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hitss / Analista -->
+    <div class="exp-item">
+      <div class="exp-date">
+        set 2024 — mai 2026
+        <span class="exp-duration">1 ano 9 meses</span>
+      </div>
+      <div>
+        <div class="exp-role">Analista de Sistemas Pleno | MVNO Nubank</div>
+        <div class="exp-company">Hitss Brasil · Remoto</div>
+        <div class="exp-desc">Sustentação e evolução da plataforma MVNO Nubank Claro, com foco em automação de processos, investigação de causa raiz e integração de sistemas.</div>
+        <div class="exp-bullets">
+          <div class="exp-bullet">Sustentação e monitoramento do fluxo de aprovisionamento no Orchestrator Ascendon, garantindo continuidade operacional e cumprimento de SLA</div>
+          <div class="exp-bullet">Investigação de causa raiz (RCA) de incidentes complexos em ambiente de telecomunicações — análise de logs, rastreamento de fluxos N3</div>
+          <div class="exp-bullet">Análise e resolução de falhas em APIs REST dos sistemas Ascendon, ECMS, PCF e OCS — autenticação OAuth e inconsistências de payload</div>
+        </div>
+        <div class="exp-tags">
+          <span class="tag hl">Python</span>
+          <span class="tag">Postman</span>
+          <span class="tag">Ascendon</span>
+          <span class="tag">OAuth</span>
+          <span class="tag">RCA</span>
+          <span class="tag">SLA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grupo Comporte -->
+    <div class="exp-item">
+      <div class="exp-date">
+        mar 2020 — fev 2024
+        <span class="exp-duration">4 anos</span>
+      </div>
+      <div>
+        <div class="exp-role">Analista de Sistemas</div>
+        <div class="exp-company">Grupo Comporte · Remoto</div>
+        <div class="exp-desc">Troubleshooting, integração de sistemas Totalbus e SAP, microserviços na AWS e OCI, monitoramento de APIs e gestão de ETL com ferramentas de BI.</div>
+        <div class="exp-bullets">
+          <div class="exp-bullet">Integração robusta entre sistemas Totalbus e SAP utilizando Oracle e SQL, garantindo fluxo contínuo de dados</div>
+          <div class="exp-bullet">Suporte a microserviços na AWS e OCI, otimizando escalabilidade e eficiência operacional</div>
+          <div class="exp-bullet">Monitoramento de APIs com Grafana, Datadog, Dynatrace, Zabbix e Kibana</div>
+          <div class="exp-bullet">Automação de Entrada de Nota Fiscal de Serviço via Robô no SAP usando UiPath</div>
+        </div>
+        <div class="exp-tags">
+          <span class="tag">AWS</span>
+          <span class="tag">OCI</span>
+          <span class="tag">SAP</span>
+          <span class="tag">UiPath</span>
+          <span class="tag">Oracle</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Datadog</span>
+          <span class="tag">ETL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linx -->
+    <div class="exp-item">
+      <div class="exp-date">
+        mar 2016 — mar 2019
+        <span class="exp-duration">3 anos 1 mês</span>
+      </div>
+      <div>
+        <div class="exp-role">Coordenador de Projetos</div>
+        <div class="exp-company">Linx S.A. · São Paulo</div>
+        <div class="exp-desc">Responsável pelo ciclo completo de projetos ERP — da implantação ao treinamento. Módulos Dugust/Microvix, PDV, SAT, NF-e e CRM para clientes do varejo.</div>
+        <div class="exp-tags">
+          <span class="tag">ERP</span>
+          <span class="tag">Linx Microvix</span>
+          <span class="tag">PDV</span>
+          <span class="tag">NF-e</span>
+          <span class="tag">Gestão de Projetos</span>
+          <span class="tag">ITIL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assistec -->
+    <div class="exp-item">
+      <div class="exp-date">
+        mar 2015 — mar 2016
+        <span class="exp-duration">1 ano 1 mês</span>
+      </div>
+      <div>
+        <div class="exp-role">Analista de Sistemas</div>
+        <div class="exp-company">Assistec Informática LTDA · São Paulo</div>
+        <div class="exp-desc">Sustentação e integração Totvs × Linx ERP. Correções de bugs SQL, testes de customizações, ETL Manager e sincronizações de dados entre sistemas.</div>
+        <div class="exp-tags">
+          <span class="tag">Totvs</span>
+          <span class="tag">Linx ERP</span>
+          <span class="tag">SQL</span>
+          <span class="tag">ETL</span>
+          <span class="tag">N2</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<div class="divider"></div>
+<section id="projects">
+  <div class="section-label">// 03 — projetos</div>
+  <h2 class="section-title">Destaque de projeto</h2>
+  <p class="section-sub">Solução desenvolvida na operação MVNO Nubank Claro que transformou o dia a dia da equipe.</p>
+
+  <div class="project-featured">
+    <div class="pf-header">
+      <div>
+        <div class="pf-name">Mesa de Operação MVNO</div>
+        <div class="pf-tagline">Interface de Consulta Unificada para Aprovisionamento MVNO Nubank Claro</div>
+      </div>
+      <div class="pf-badge">Projeto em produção</div>
+    </div>
+
+    <div class="pf-metrics">
+      <div class="pf-metric">
+        <div class="pf-metric-num">90%</div>
+        <div class="pf-metric-label">menos tempo por consulta</div>
+      </div>
+      <div class="pf-metric">
+        <div class="pf-metric-num">~200h</div>
+        <div class="pf-metric-label">economizadas por mês</div>
+      </div>
+      <div class="pf-metric">
+        <div class="pf-metric-num">6</div>
+        <div class="pf-metric-label">sistemas integrados</div>
+      </div>
+    </div>
+
+    <div class="pf-body">
+      <div>
+        <div class="pf-col-title">// ANTES (processo manual)</div>
+        <div class="pf-list">
+          <div class="pf-row bad">Gerar 3 tokens OAuth manualmente</div>
+          <div class="pf-row bad">Coletar dados no Ascendon um a um</div>
+          <div class="pf-row bad">Chamar 5 APIs separadas com dados copiados</div>
+          <div class="pf-row bad">Comparar CycleDays entre sistemas na mão</div>
+          <div class="pf-row bad">Abrir e navegar no SPSWeb manualmente</div>
+          <div class="pf-row bad" style="color:var(--amber)">⏱ Total: 15 a 20 minutos por consulta</div>
+        </div>
+      </div>
+      <div>
+        <div class="pf-col-title">// DEPOIS (Mesa de Operação)</div>
+        <div class="pf-list">
+          <div class="pf-row good">Token gerado automaticamente</div>
+          <div class="pf-row good">6 sistemas consultados simultaneamente</div>
+          <div class="pf-row good">CycleDays validados e cruzados automaticamente</div>
+          <div class="pf-row good">SPSWeb consultado via Playwright</div>
+          <div class="pf-row good">Resultado completo com status visual</div>
+          <div class="pf-row good" style="color:var(--green)">⚡ Total: menos de 2 minutos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pf-footer">
+      <div class="pf-stack">Python · FastAPI · Playwright · OAuth 2.0 · HTML/JS</div>
+      <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent)">mai 2026 — presente ↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div class="divider"></div>
+<section id="skills">
+  <div class="section-label">// 04 — habilidades</div>
+  <h2 class="section-title">Stack técnico</h2>
+  <div class="skills-grid">
+
+    <div class="skill-group">
+      <div class="skill-group-title">Automação & Dev</div>
+      <div class="skill-list">
+        <div class="skill-row">
+          <span class="skill-name">Python</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">FastAPI</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Playwright</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">UiPath (RPA)</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">HTML / JS</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">Integração & Cloud</div>
+      <div class="skill-list">
+        <div class="skill-row">
+          <span class="skill-name">API REST / OAuth</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">AWS</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">OCI (Oracle Cloud)</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Postman</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">SQL / Oracle DB</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-title">Monitoramento & BI</div>
+      <div class="skill-list">
+        <div class="skill-row">
+          <span class="skill-name">Grafana</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Datadog / Dynatrace</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Kibana / Zabbix</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">ETL / Tableau</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div><div class="skill-bar"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">ITIL v3</span>
+          <div class="skill-bar-wrap"><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on"></div><div class="skill-bar on dim"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="divider"></div>
+<section id="contact">
+  <div class="section-label">// 05 — contato</div>
+  <h2 class="section-title">Vamos conversar</h2>
+  <div class="contact-wrap">
+    <div>
+      <p class="contact-intro">
+        Estou aberto a oportunidades em automação, desenvolvimento Full Stack e inteligência operacional. Se você tem um projeto onde a tecnologia pode transformar processos, me chama.
+      </p>
+      <a href="https://www.linkedin.com/in/gustavo-miranda-84178bb5/" target="_blank" class="contact-email">Mensagem no LinkedIn ↗</a>
+      <div class="contact-location">São Bernardo do Campo, São Paulo, Brasil · Remoto</div>
+    </div>
+    <div class="social-list">
+      <a href="https://www.linkedin.com/in/gustavo-miranda-84178bb5/" target="_blank" class="social-item">
+        <div>
+          <div class="social-name">LinkedIn</div>
+          <div class="social-handle">gustavo-miranda-84178bb5</div>
+        </div>
+        <div class="social-arrow">↗</div>
+      </a>
+      <div class="social-item" style="cursor:default;">
+        <div>
+          <div class="social-name">Empresa atual</div>
+          <div class="social-handle">Hitss Brasil · MVNO Nubank Claro</div>
+        </div>
+        <div class="social-arrow" style="color:var(--fg3)">·</div>
+      </div>
+      <div class="social-item" style="cursor:default;">
+        <div>
+          <div class="social-name">Certificação</div>
+          <div class="social-handle">ITIL v3 Foundation — AXELOS #5127204</div>
+        </div>
+        <div class="social-arrow" style="color:var(--green)">✓</div>
+      </div>
+      <div class="social-item" style="cursor:default;">
+        <div>
+          <div class="social-name">+500 conexões</div>
+          <div class="social-handle">Rede profissional ativa no LinkedIn</div>
+        </div>
+        <div class="social-arrow" style="color:var(--fg3)">·</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 Gustavo Miranda — São Bernardo do Campo, SP</div>
+  <div class="footer-copy">Automação · Inteligência Operacional · Full Stack</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'none';
+        e.target.style.transition = 'opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll(
+    '.exp-item, .skill-group, .pf-metric, .stat-box, .strip-item, .about-text, .cert-box, .highlight-box, .project-featured, .contact-wrap > div'
+  ).forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transitionDelay = (i * 0.06) + 's';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
